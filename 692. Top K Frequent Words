@@ -1,0 +1,44 @@
+Intuition
+As it is saying for frequency, anyone will think about map.
+
+Approach
+First counting frequency of each word. Then sorting words on basis of frequency.
+
+[&](const string& a,const string& b ){
+    if(mp[a]!=mp[b])
+        return mp[a] > mp[b];
+    return a<b;
+}
+Above code is used of sorting.
+If frequency is not similar then sort in according to frequency.
+
+Otherwise sort is lexicographically.
+
+Complexity
+Time complexity:
+nlog(n) ==> sorting function
+
+Space complexity:
+O(n)
+
+Code
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& wd, int k) {
+        map<string,int>mp;
+        
+        for(auto it:wd)
+            mp[it] += 1;
+        vector<string>v;
+
+        for(auto it:mp)
+            v.push_back(it.first);
+
+        sort(v.begin(),v.end(),[&](const string& a,const string& b ){
+            if(mp[a]!=mp[b])
+                return mp[a] > mp[b];
+            return a<b;
+        });
+        return vector<string>(v.begin(),v.begin()+k);
+    }
+};
