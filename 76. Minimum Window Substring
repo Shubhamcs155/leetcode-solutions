@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int cnt[52];
+    int retval(char c)
+    {
+        if(c>='a')
+            return c-71;
+        return c - 'A';
+    }
+    
+    bool check(int st,int ed,vector<vector<int>>&mp)
+    {
+        bool ans = true;
+        for(int i=0;i<52;i++)
+        {
+            // if(ed==6)
+            // cout<<"i "<<i<<" cnt[i] "<<cnt[i]<<endl;
+            if((mp[i][ed]-mp[i][st]) < cnt[i] )
+                return false;
+            // if(cnt[i]>0)
+                
+        }
+            
+        return true;
+    }
+    
+    string minWindow(string s, string t) {
+        if(s.size()<t.size())
+            return "";
+        vector<vector<int>>mp(52,vector<int>(s.size()+2,0));
+        
+        memset(cnt,0,sizeof(cnt));
+        for(int i=0;i<t.size();i++)
+            cnt[retval(t[i])] += 1;
+        
+        int n = s.size();
+        int m = t.size();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<52;j++)
+                mp[j][i+1] = mp[j][i];
+            mp[retval(s[i])][i+1] +=1 ;
+        }
+        int a=0,b=1000000;
+        int st = 0;
+        int ed = 1;
+        while(st<ed && ed<=n)
+        {
+            // cout<<"st = "<<st<<" ed = "<<ed<<endl;
+            if(check(st,ed,mp))
+            {
+                if((b-a)>=(ed-st))
+                {
+                    b = ed - 1;
+                    a = st;
+                }
+                st++;
+            }
+            else{
+                ed++;
+            }
+            // cout<<"st = "<<st<<" ed = "<<ed<<endl;
+        }
+        if(b==1000000)
+            return "";
+        string ans = "";
+        for(int i=a;i<=b;i++)
+            ans+=s[i];
+        return ans;
+    }
+};
