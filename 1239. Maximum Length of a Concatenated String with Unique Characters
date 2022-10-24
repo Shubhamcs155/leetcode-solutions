@@ -1,0 +1,83 @@
+Intuition
+Each string in input array have two options. Either to take it or not to take it.
+
+Approach
+This could be solved by using 2-D dp like 0-1 knapsack.
+But problem here is we can't decide which optimal answer to consider at particular position.
+
+So we don't have option other than trying all possible combinations.
+
+However we can reduce time required or iterations by removing all combinations which are already invalid.
+
+At each stage we are getting combinations less than or equal to previous one in number.
+
+Starting with blank string and first string of input array. Then adding strings for each combination. Also updating answer at each step.
+
+Solution is explained using comments in code below.
+
+Complexity
+Time complexity:
+O((2^n)*26)
+
+Space complexity:
+O((2^n)*26)
+
+Code
+class Solution {
+public:
+    int maxLength(vector<string>& ar) {
+        int mp[26];
+        int n = ar.size();
+        vector<string>arr;
+
+        //filtering input so that it will contain strings with unique characters only
+
+        for(int i=0;i<n;i++){
+            bool ok = true;
+            memset(mp,0,sizeof(mp));
+            for(auto c:ar[i]){
+                mp[c-'a'] += 1;
+                if(mp[c-'a']>1){
+                    ok = false;break;
+                }
+            }
+            if(ok)
+                arr.push_back(ar[i]);
+        }
+        if(arr.size()==0)
+            return 0;
+
+        vector<string>q;
+        int ans = arr[0].size();
+
+        //starting with empty string and first string of input array
+        q.push_back("");
+        q.push_back(arr[0]);
+
+        n = arr.size();
+
+        for(int i=1;i<n;i++){
+            memset(mp,0,sizeof(mp));
+            for(auto c:arr[i])
+                mp[c-'a'] = 1;
+            int z = arr[i].size();
+            int x = q.size();
+
+            for(int j=0;j<x;j++){
+                bool ok = true;
+                for(auto c:q[j])
+                //checking for uniqueness for each new string
+                    if(mp[c-'a']){
+                        ok = false;break;
+                    }
+
+                // updating answer and putting string int vector q for further processing 
+                if(ok){
+                    q.push_back(q[j]+arr[i]);
+                    ans = max(ans,int(z+q[j].size()));
+                }
+            }
+        }
+        return ans;
+    }
+};
