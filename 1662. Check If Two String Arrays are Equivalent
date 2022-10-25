@@ -17,7 +17,6 @@ O(1)
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-Code
 class Solution {
 public:
     bool arrayStringsAreEqual(vector<string>&arr, vector<string>&brr) {
