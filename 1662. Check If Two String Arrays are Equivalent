@@ -1,0 +1,49 @@
+Intuition
+We should compare each character in both arrays orderly.
+
+Approach
+Iterate on each string in both arrays, compare characters.
+
+Crux here is at the end, you should get indexes like this
+
+if(i==arr.size() && j==brr.size() && ci==0 && cj==0)
+            return true;
+Complexity
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Code
+class Solution {
+public:
+    bool arrayStringsAreEqual(vector<string>&arr, vector<string>&brr) {
+        int x = arr.size(), y = brr.size();
+
+        int i = 0,j = 0;
+        int ci=0,cj=0;
+        
+        while(true){
+            if(arr[i][ci++]!=brr[j][cj++])
+                return false;
+            
+            if(arr[i].size()==ci){
+                i++;ci = 0;
+            }
+                
+            if(brr[j].size()==cj){
+                j++;cj=0;
+            }
+                
+            if(i>=arr.size() || j>=brr.size())
+                break;
+        }
+
+        if(i==arr.size() && j==brr.size() && ci==0 && cj==0)
+            return true;
+        return false;
+    }
+};
